@@ -42,7 +42,7 @@ public class ConsistencyHash {
         System.out.println(uuid + "'s hash code:" + hash);
         int serverHashCode = nodeSplit.firstKey();
         SortedMap<Integer,String> subMap = nodeSplit.tailMap(hash);
-        if (subMap.values().size() > 1) {
+        if (subMap.entrySet().size() > 0) {
             serverHashCode = subMap.firstKey();
         }
         String server = nodeSplit.get(serverHashCode);
@@ -55,7 +55,6 @@ public class ConsistencyHash {
         for(int i=0;i<100;i++) {
             consistencyHash.getRouterServer(UUID.randomUUID().toString());
         }
-
 
     }
 }
