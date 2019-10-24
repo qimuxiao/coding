@@ -32,7 +32,7 @@ public class ConsistencyHash {
         hash += hash << 3;
         hash ^= hash >> 17;
         hash += hash << 5;
-        // 如果算出来的值为负数则取其绝对值
+        //hash有可能为负数，取绝对值
         hash = Math.abs(hash);
         return hash;
     }
@@ -40,14 +40,11 @@ public class ConsistencyHash {
     public String getRouterServer(String uuid){
         int hash = hash(uuid);
         System.out.println(uuid + "'s hash code:" + hash);
-        SortedMap<Integer,String> subMap = nodeSplit.tailMap(hash);
         int serverHashCode = nodeSplit.firstKey();
-        try {
+        SortedMap<Integer,String> subMap = nodeSplit.tailMap(hash);
+        if (subMap.values().size() > 1) {
             serverHashCode = subMap.firstKey();
-        }catch (Exception e) {
-            System.out.println("there is no hash code,use default:" + serverHashCode);
         }
-
         String server = nodeSplit.get(serverHashCode);
         System.out.println(uuid + "'s server is:" + server);
         return server;
